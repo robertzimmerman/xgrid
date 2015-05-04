@@ -11,28 +11,12 @@ for (rows = 1; rows <= 4; rows++) {
     row.style.width = ((n * 160) + (n * 10)) + "px"; // fixed box width
     
     for (sqrs = 1; sqrs <= 4; sqrs++) {
-        // setting squares for each row
-        var grid = document.createElement("div");
-        grid.className = "square";
-        grid.setAttribute("id", "row-"+rows+"-sq-"+sqrs);
-        row.appendChild(grid);
+        row.appendChild(createSquare(rows, sqrs));
     }
     containerGrid.appendChild(row);
 }
 
-/**
-for (i = 0; i < 4; i++) {
-    //code
-    var grid = document.createElement("div");
-    grid.className = "square";
-    grid.setAttribute("id", "sq-"+i);
-    
-    containerGrid.appendChild(grid);
-}
-**/
-
 document.body.addEventListener('click', function(e) {
-    
     flag = false;
     
     console.log(e);
@@ -40,14 +24,18 @@ document.body.addEventListener('click', function(e) {
     obj.className += " marked";
     console.log(obj.getAttribute("id"));
     // place an x on the obj
-    
     obj.removeEventListener('click');
-    
     flag = markX(obj);
-    
     obj.addEventListener('click');
     
 });
+
+function createSquare(rowId, sqrId) {
+    var grid = document.createElement("div");
+    grid.className = "square";
+    grid.setAttribute("id", "row-"+rowId+"-sq-"+sqrId);
+    return grid;
+}
 
 
 function markX(objSqr) {

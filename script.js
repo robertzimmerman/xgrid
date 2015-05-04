@@ -16,6 +16,7 @@ for (rows = 1; rows <= 4; rows++) {
     containerGrid.appendChild(row);
 }
 
+
 document.body.addEventListener('click', function(e) {
     flag = false;
     
@@ -34,13 +35,13 @@ function createSquare(rowId, sqrId) {
     var grid = document.createElement("div");
     grid.className = "square";
     grid.setAttribute("id", "row-"+rowId+"-sq-"+sqrId);
+    grid.setAttribute("ondrop", "drop(event)");
+    grid.setAttribute("ondragover", "allowDrop(event)");
     return grid;
 }
 
 
 function markX(objSqr) {
-    // if childNode exist
-    
     
     if (objSqr.firstChild != null) {
         console.log('do nothing something is already in place');
@@ -54,11 +55,26 @@ function markX(objSqr) {
     } else {
         xAttri = document.createElement("div");
         xAttri.className = "marked-x";
+        xAttri.setAttribute("draggable", "true");
+        xAttri.setAttribute("ondragstart", "drag(event)");
+        xAttri.setAttribute("id", objSqr.getAttribute("id") + "-mark");
         //xAttri.innerHTML = "X";
         objSqr.appendChild(xAttri);
-    }    
         
-    return true;    
-    
-    
+    }    
+    return true;        
+}
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
 }

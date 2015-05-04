@@ -1,0 +1,27 @@
+.square {
+    float:left;
+    position: relative;
+    width: 145px;
+    height: 145px;
+    padding-bottom : 10px; /* = width for a 1:1 aspect ratio */
+    margin:1.66%;
+    background-position:center center;
+    background-repeat:no-repeat;
+    background-size:cover; /* you change this to "contain" if you don't want the images to be cropped */
+    background-color: yellow;
+    /* hoveer */
+    cursor: pointer;
+    cursor: hand;
+}
+
+.marked-x {
+    
+    background-image: url('x-image.jpg');
+    position: absolute;
+    display: block;
+    z-index: 10000000;
+    top: 0;
+    left: 0;
+    width: 75px;
+    height: 75px;
+}

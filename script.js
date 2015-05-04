@@ -18,16 +18,13 @@ for (rows = 1; rows <= 4; rows++) {
 
 
 document.body.addEventListener('click', function(e) {
-    flag = false;
     
     console.log(e);
     var obj = e.srcElement;
     obj.className += " marked";
     console.log(obj.getAttribute("id"));
     // place an x on the obj
-    obj.removeEventListener('click');
-    flag = markX(obj);
-    obj.addEventListener('click');
+    markX(obj);
     
 });
 

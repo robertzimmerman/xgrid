@@ -4,7 +4,7 @@
     width: 145px;
     height: 145px;
     padding-bottom : 10px; /* = width for a 1:1 aspect ratio */
-    margin:1.66%;
+    margin:10px;
     background-position:center center;
     background-repeat:no-repeat;
     background-size:cover; /* you change this to "contain" if you don't want the images to be cropped */

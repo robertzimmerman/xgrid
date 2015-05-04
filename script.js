@@ -1,13 +1,15 @@
 
 var containerGrid = document.getElementById("container-grid");
 
-$n = 4;
+n = 4;
 
 for (rows = 1; rows <= 4; rows++) {
     // creating rows
     var row = document.createElement("div");
     row.setAttribute("id", "row-"+rows);
-
+    
+    row.style.width = ((n * 160) + (n * 10)) + "px"; // fixed box width
+    
     for (sqrs = 1; sqrs <= 4; sqrs++) {
         // setting squares for each row
         var grid = document.createElement("div");

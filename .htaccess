@@ -1,0 +1,6 @@
+<IfModule mod_rewrite.so>
+  RewriteEngine On
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^grid/(.*)$ grid.html [QSA,L]
+</IfModule>

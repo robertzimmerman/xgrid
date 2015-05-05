@@ -28,7 +28,8 @@ document.body.addEventListener('click', function(e) {
         //code
         obj.parentNode.setAttribute("class","square");
         obj.parentNode.removeChild(obj);
-        
+        obj.parentNode.setAttribute("ondrop","");
+        obj.parentNode.setAttribute("ondragover","");
     } else {
         obj.className += " marked";
         markX(obj);
@@ -52,21 +53,13 @@ function markX(objSqr) {
         console.log('do nothing something is already in place');
         
         if (objSqr.firstChild.getAttribute("class") == "marked-x") {
-            // instead we remove it
             objSqr.innerHTML = "";
             objSqr.className = "square";
         }
             
     } else {
-        xAttri = document.createElement("div");
-        xAttri.className = "marked-x";
-        xAttri.setAttribute("draggable", "true");
-        xAttri.setAttribute("ondragstart", "drag(event)");
-        xAttri.setAttribute("id", objSqr.getAttribute("id") + "-mark");
-        
-        //var markXObjectAttributes = createMarkX(objSqr.getAttribute("id"));
-        //objSqr.appendChild(markXObjectAttributes);
-        objSqr.appendChild(xAttri);
+        var markXObjectAttributes = createMarkX(objSqr.getAttribute("id"));
+        objSqr.appendChild(markXObjectAttributes);
         
     }    
     return true;        
@@ -81,7 +74,15 @@ function createMarkX(parentIdName) {
     return xAttri;
 }
 
-function resetProperties(fromElement, toElement) {
+function swapPropertiesBetweenElements(fromElement, toElement) {
+    // remove marked class
+    fromElement.className = "square";
+    
+    // add mark class and set attributes
+    toElement.className = "square marked"
+    toElement.firstChild.setAttribute("id", toElement.getAttribute("id") + "-mark")
+    toElement.setAttribute("ondrop","");
+    toElement.setAttribute("ondragover","");
     
 }
 
@@ -89,7 +90,7 @@ function resetProperties(fromElement, toElement) {
 function drag(ev) {
     //console.log(ev.target.id);
     ev.dataTransfer.setData("text", ev.target.id);
-    toElement = ev.target.id.replace("-mark","");
+    fromElement = ev.srcElement.parentElement;
 }
 
 function allowDrop(ev) {
@@ -97,9 +98,9 @@ function allowDrop(ev) {
 }
 
 function drop(ev) {
-    ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
     ev.target.appendChild(document.getElementById(data));
+    swapPropertiesBetweenElements(fromElement,ev.srcElement);
 }
 
 /** Helper Functions **/

@@ -4,7 +4,16 @@ var containerGrid = document.getElementById("container-grid");
 var fromElement = null; // moving object from element
 var toElement = null; // moving object to element
 
-n = 5;
+n = window.location.search.substr(1);
+
+n = parseInt(n);
+
+console.log(n);
+if (isNaN(n)) {
+    n = 4;
+}
+
+
 
 createGrid(n);
 

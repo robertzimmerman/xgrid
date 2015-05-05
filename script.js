@@ -1,8 +1,21 @@
+/**
+ * @author - Robert Zimmerman
+ * @assignment
+ * Purpose: Create a N x N grid where you can place an X mark.
+ * Usecases: You can tap a square for an 'X' to appear, if you
+ * tap a square where an 'X' is already occupied, it removes that 'X'.
+ * You can drag an 'X' to another square, but if the square is occupied
+ * the drag is cancelled.
+ */
+
 
 var containerGrid = document.getElementById("container-grid");
 var fromElement = null; // moving object from element
 var toElement = null; // moving object to element
 
+/**
+ * get the param for the size of the grid
+ */
 n = window.location.search.substr(1);
 
 n = parseInt(n);
@@ -11,17 +24,27 @@ if (isNaN(n)) {
     n = 4;
 }
 
+/**
+ * Creates grid and populates any 'X's if there is a cookie available
+ **/
 if (createGrid(n)) {
     if (document.cookie) {
         populatePastElements();
     }
 }
 
+/*
+ * add an EventListerner to clear cookie
+ */
 document.getElementById("clear-cookie").addEventListener("click", function(event){
-       checkBox(event); 
+       deleteCookie(); 
     }, false);
 
 
+/**
+ *  function to create the grid based on param
+ *  it is n x n
+ */
 function createGrid(n) {
 
     for (rows = 1; rows <= n; rows++) {
@@ -40,24 +63,23 @@ function createGrid(n) {
     return true;
 }
 
-
+/**
+ * function to add a X class and mark the box marked
+ * @element
+ * sets cookie with all elements in container
+ */
 function checkBox(e) {
    
-    if (e.target.id == 'clear-cookie') {
-        deleteCookie();
+    var obj = e.target;
+    if (hasClass(obj, "marked-x")) {
+        obj.parentNode.setAttribute("class","square");
+        obj.parentNode.setAttribute("ondrop", "drop(event)");
+        obj.parentNode.setAttribute("ondragover", "allowDrop(event)");
+        obj.parentNode.removeChild(obj);
     } else {
-        var obj = e.target;
-        if (hasClass(obj, "marked-x")) {
-            obj.parentNode.setAttribute("class","square");
-            obj.parentNode.setAttribute("ondrop", "drop(event)");
-            obj.parentNode.setAttribute("ondragover", "allowDrop(event)");
-            obj.parentNode.removeChild(obj);
-        } else {
-           markX(obj);
-        }
-        setAllPastElementsWithMarkedX();
+        markX(obj);
     }
-    
+    setAllPastElementsWithMarkedX();
 }
 
 

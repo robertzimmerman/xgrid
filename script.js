@@ -42,7 +42,7 @@ document.getElementById("clear-cookie").addEventListener("click", function(event
 
 
 /**
- *  function to create the grid based on param
+ *  purpose: function to create the grid based on param
  *  it is n x n
  */
 function createGrid(n) {
@@ -64,7 +64,7 @@ function createGrid(n) {
 }
 
 /**
- * function to add a X class and mark the box marked
+ * purpose: function to add a X class and mark the box marked
  * @element
  * sets cookie with all elements in container
  */
@@ -82,7 +82,12 @@ function checkBox(e) {
     setAllPastElementsWithMarkedX();
 }
 
-
+/**
+ * purpose: creating the square from grid coordinates
+ *          adds attributes to be draggable and clickable
+ * @argument rowId, sqrId
+ * @returns grid
+ */
 function createSquare(rowId, sqrId) {
     var grid = document.createElement("div");
     grid.className = "square";
@@ -95,7 +100,11 @@ function createSquare(rowId, sqrId) {
     return grid;
 }
 
-
+/**
+ * purpose: creating the markX div container "OR" removing it if its occupied
+ * @argument object of the square
+ * @returns true
+ */
 function markX(objSqr) {
     
     if (objSqr.firstChild != null) {
@@ -103,7 +112,6 @@ function markX(objSqr) {
         if (objSqr.firstChild.getAttribute("class") == "marked-x") {
             objSqr.innerHTML = "";
             objSqr.className = "square";
-           
         }
             
     } else {
@@ -117,6 +125,12 @@ function markX(objSqr) {
     return true;        
 }
 
+
+/**
+ * purpose: when creating the X mark, set attributes such as draggable, class mark
+ *          and parent id from what it is residing to.
+ * @argument parentIdName
+ */
 function createMarkX(parentIdName) {
     xAttri = document.createElement("div");
     xAttri.className = "marked-x";
@@ -126,36 +140,40 @@ function createMarkX(parentIdName) {
     return xAttri;
 }
 
+/**
+ * purpose: when a drag is completed from one sqr to another
+ *          adjustments need to be updated such as sqr fromElement needs to
+ *          be clear of "marked" and toElement needs to be known as "marked"
+ * @augments fromElement toElement
+ */
 function swapPropertiesBetweenElements(fromElement, toElement) {
     // remove marked class
-    fromElement.className = "square";
-    
+    fromElement.className = "square";   
     // add mark class and set attributes
     toElement.className = "square marked"
     toElement.firstChild.setAttribute("id", toElement.getAttribute("id") + "-mark")
     toElement.setAttribute("ondrop","");
     toElement.setAttribute("ondragover","");
-    
 }
 
-
+/**
+ * drag and drop functionality
+ */
 function drag(ev) {
     ev.dataTransfer.setData("text", ev.target.id);
     fromElement = ev.target.parentElement;
 }
 
 function allowDrop(ev) {
-    
     ev.preventDefault();
 }
 
 function drop(ev) {
-    ev.stopPropagation();
+    ev.stopPropagation(); // stops firefox from loading image on drag
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
     ev.target.appendChild(document.getElementById(data));
     swapPropertiesBetweenElements(fromElement,ev.target);
-    
 }
 
 /** Helper Functions **/
@@ -163,6 +181,10 @@ function hasClass(element, clsName) {
     return (' '+ element.className + ' ').indexOf(' ' + clsName + ' ') > -1;
 }
 
+/**
+ * Purpose: if there is a cookie - populate the grid with the existing "X"
+ * @cookie
+ */
 function populatePastElements() {
     var elements = getCookie();
     for (i = 0; i < elements.length; i++) {
@@ -184,20 +206,24 @@ function setAllPastElementsWithMarkedX() {
     setCookie(markedSaves.slice(0, -1)); // slice the last ,
 }
 
+// setting cookie for 1 hour
 function setCookie(markedSaves) {
     var d = new Date();
     d.setTime(d.getTime() + 3600 * 1000);
     document.cookie = 'elements=' + markedSaves + '; expires=' + d.toUTCString() + '; path=/';
 }
 
+// checks if cookie elements field exist
 function checkCookieExist() {
     return (getCookie('elements') != "");
 }
 
+// deletes cookie
 function deleteCookie() {
     document.cookie = 'elements=; expires=Thu, 01-Jan-70 00:00:01 GMT; path=/';
 }
 
+// returns the field's value 
 function getCookie(fields) {
    var elem = document.cookie.split('=');
    var elems = elem[1].split(',');

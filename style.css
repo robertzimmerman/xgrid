@@ -23,3 +23,15 @@
     width: 100px;
     height: 100px;
 }
+
+.button-layout {
+  margin: 15px;
+  background-color: #0078e7;
+  color: #fff;
+  font-family: inherit;
+  padding: .5em 1em;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 25px;
+}

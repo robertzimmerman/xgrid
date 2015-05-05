@@ -1,6 +1,5 @@
 
 var containerGrid = document.getElementById("container-grid");
-
 var fromElement = null; // moving object from element
 var toElement = null; // moving object to element
 
@@ -8,14 +7,20 @@ n = window.location.search.substr(1);
 
 n = parseInt(n);
 
-console.log(n);
 if (isNaN(n)) {
     n = 4;
 }
 
+console.log(document.cookie);
 
 
-createGrid(n);
+if (createGrid(n)) {
+    if (document.cookie) {
+        populatePastElements();
+    }
+}
+
+
 
 function createGrid(n) {
 
@@ -32,24 +37,30 @@ function createGrid(n) {
         containerGrid.appendChild(row);
     }
 
+    return true;
 }
+
+
+
 
 
 
 document.body.addEventListener('click', function(e) {
     
-    var obj = e.srcElement;
-    if (hasClass(obj, "marked-x")) {
-        obj.parentNode.setAttribute("class","square");
-        obj.parentNode.setAttribute("ondrop", "drop(event)");
-        obj.parentNode.setAttribute("ondragover", "allowDrop(event)");
-        obj.parentNode.removeChild(obj);
-       
+    
+    if (e.srcElement.id == 'clear-cookie') {
+        deleteCookie();
     } else {
-        obj.className += " marked";
-        obj.setAttribute("ondrop","");
-        obj.setAttribute("ondragover","");
-        markX(obj);
+        var obj = e.srcElement;
+        if (hasClass(obj, "marked-x")) {
+            obj.parentNode.setAttribute("class","square");
+            obj.parentNode.setAttribute("ondrop", "drop(event)");
+            obj.parentNode.setAttribute("ondragover", "allowDrop(event)");
+            obj.parentNode.removeChild(obj);
+        } else {
+           markX(obj);
+        }
+        setAllPastElementsWithMarkedX();
     }
     
 });
@@ -67,7 +78,6 @@ function createSquare(rowId, sqrId) {
 function markX(objSqr) {
     
     if (objSqr.firstChild != null) {
-        console.log('do nothing something is already in place');
         
         if (objSqr.firstChild.getAttribute("class") == "marked-x") {
             objSqr.innerHTML = "";
@@ -76,10 +86,13 @@ function markX(objSqr) {
         }
             
     } else {
+        objSqr.className += " marked";
+        objSqr.setAttribute("ondrop","");
+        objSqr.setAttribute("ondragover","");
         var markXObjectAttributes = createMarkX(objSqr.getAttribute("id"));
         objSqr.appendChild(markXObjectAttributes);
         
-    }    
+    }
     return true;        
 }
 
@@ -127,3 +140,47 @@ function drop(ev) {
 function hasClass(element, clsName) {
     return (' '+ element.className + ' ').indexOf(' ' + clsName + ' ') > -1;
 }
+
+function populatePastElements() {
+    var elements = getCookie();
+    for (i = 0; i < elements.length; i++) {
+        // here we populate x
+        console.log(elements[i]);
+        console.log(document.getElementById(elements[i]));
+        markX(document.getElementById(elements[i]));
+    }
+    
+}
+
+// sets all past elements with marked x in cookie
+function setAllPastElementsWithMarkedX() {
+    markedElements = document.getElementsByClassName("marked");
+    var markedSaves = '';
+    // looping through to get the names
+    for (i = 0; i< markedElements.length; i++) {
+        markedSaves += markedElements[i].id +',';
+    }
+    
+    setCookie(markedSaves.slice(0, -1)); // slice the last ,
+}
+
+function setCookie(markedSaves) {
+    var d = new Date();
+    d.setTime(d.getTime() + 3600 * 1000);
+    document.cookie = 'elements=' + markedSaves + '; expires=' + d.toUTCString() + '; path=/';
+}
+
+function checkCookieExist() {
+    return (getCookie('elements') != "");
+}
+
+function deleteCookie() {
+    document.cookie = 'elements=; expires=Thu, 01-Jan-70 00:00:01 GMT; path=/';
+}
+
+function getCookie(fields) {
+   var elem = document.cookie.split('=');
+   var elems = elem[1].split(',');
+   return elems;
+}
+

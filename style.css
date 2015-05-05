@@ -3,6 +3,8 @@
     position: relative;
     width: 145px;
     height: 145px;
+    left: 7px;
+    top: 5px;
     padding-bottom : 10px; /* = width for a 1:1 aspect ratio */
     margin:10px;
     background-position:center center;
@@ -10,10 +12,10 @@
     /* hoveer */
     cursor: pointer;
     cursor: hand;
+    border-radius: 25px;
 }
 
 .marked-x {
-    
     background-image: url('x-image.gif');
     position: absolute;
     display: block;
@@ -34,4 +36,27 @@
   text-align: center;
   cursor: pointer;
   border-radius: 25px;
+  float: left;
+  margin-left: 30px;
+  position: absolute;
+}
+
+.grid-me-not {
+  text-align: center;
+  font-size: 36px;
+  line-height: 40px;
+  margin: 1em 0 .6em 0;
+  font-weight: normal;
+  color: white;
+  font-family: 'Hammersmith One', sans-serif;
+  text-shadow: 0 -1px 0 rgba(0,0,0,0.4);
+  position: relative;
+  color: #6Cf;
+}
+
+#container-grid {
+    margin: auto;
+    display: block;
+    background-color: black;
+    border-radius: 25px;
 }

@@ -46,7 +46,8 @@ document.getElementById("clear-cookie").addEventListener("click", function(event
  *  it is n x n
  */
 function createGrid(n) {
-
+    containerGrid.style.width = ((n * 160) + (n * 10)) + "px";
+    containerGrid.style.height = ((n * 160) + (n * 20)) + "px";
     for (rows = 1; rows <= n; rows++) {
         // creating rows
         var row = document.createElement("div");
@@ -59,7 +60,7 @@ function createGrid(n) {
         }
         containerGrid.appendChild(row);
     }
-
+    
     return true;
 }
 

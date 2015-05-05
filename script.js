@@ -11,15 +11,15 @@ if (isNaN(n)) {
     n = 4;
 }
 
-console.log(document.cookie);
-
-
 if (createGrid(n)) {
     if (document.cookie) {
         populatePastElements();
     }
 }
 
+document.getElementById("clear-cookie").addEventListener("click", function(event){
+       checkBox(event); 
+    }, false);
 
 
 function createGrid(n) {
@@ -41,17 +41,12 @@ function createGrid(n) {
 }
 
 
-
-
-
-
-document.body.addEventListener('click', function(e) {
-    
-    
-    if (e.srcElement.id == 'clear-cookie') {
+function checkBox(e) {
+   
+    if (e.target.id == 'clear-cookie') {
         deleteCookie();
     } else {
-        var obj = e.srcElement;
+        var obj = e.target;
         if (hasClass(obj, "marked-x")) {
             obj.parentNode.setAttribute("class","square");
             obj.parentNode.setAttribute("ondrop", "drop(event)");
@@ -63,7 +58,8 @@ document.body.addEventListener('click', function(e) {
         setAllPastElementsWithMarkedX();
     }
     
-});
+}
+
 
 function createSquare(rowId, sqrId) {
     var grid = document.createElement("div");
@@ -71,6 +67,9 @@ function createSquare(rowId, sqrId) {
     grid.setAttribute("id", "row-"+rowId+"-sq-"+sqrId);
     grid.setAttribute("ondrop", "drop(event)");
     grid.setAttribute("ondragover", "allowDrop(event)");
+    grid.addEventListener("click", function(event){
+       checkBox(event); 
+    }, false);
     return grid;
 }
 
@@ -119,20 +118,21 @@ function swapPropertiesBetweenElements(fromElement, toElement) {
 
 
 function drag(ev) {
-    console.log(ev.target.id);
     ev.dataTransfer.setData("text", ev.target.id);
-    fromElement = ev.srcElement.parentElement;
+    fromElement = ev.target.parentElement;
 }
 
 function allowDrop(ev) {
+    
     ev.preventDefault();
 }
 
 function drop(ev) {
-    
+    ev.stopPropagation();
+    ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
     ev.target.appendChild(document.getElementById(data));
-    swapPropertiesBetweenElements(fromElement,ev.srcElement);
+    swapPropertiesBetweenElements(fromElement,ev.target);
     
 }
 
@@ -145,8 +145,6 @@ function populatePastElements() {
     var elements = getCookie();
     for (i = 0; i < elements.length; i++) {
         // here we populate x
-        console.log(elements[i]);
-        console.log(document.getElementById(elements[i]));
         markX(document.getElementById(elements[i]));
     }
     

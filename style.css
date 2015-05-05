@@ -6,8 +6,6 @@
     padding-bottom : 10px; /* = width for a 1:1 aspect ratio */
     margin:10px;
     background-position:center center;
-    background-repeat:no-repeat;
-    background-size:cover; /* you change this to "contain" if you don't want the images to be cropped */
     background-color: yellow;
     /* hoveer */
     cursor: pointer;
@@ -16,12 +14,12 @@
 
 .marked-x {
     
-    background-image: url('x-image.jpg');
+    background-image: url('x-image.gif');
     position: absolute;
     display: block;
     z-index: 10000000;
-    top: 0;
-    left: 0;
-    width: 75px;
-    height: 75px;
+    top: 25px;
+    left: 25px;
+    width: 100px;
+    height: 100px;
 }

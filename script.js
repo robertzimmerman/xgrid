@@ -4,19 +4,25 @@ var containerGrid = document.getElementById("container-grid");
 var fromElement = null; // moving object from element
 var toElement = null; // moving object to element
 
-n = 4;
+n = 5;
 
-for (rows = 1; rows <= 4; rows++) {
-    // creating rows
-    var row = document.createElement("div");
-    row.setAttribute("id", "row-"+rows);
-    
-    row.style.width = ((n * 160) + (n * 10)) + "px"; // fixed box width
-    
-    for (sqrs = 1; sqrs <= 4; sqrs++) {
-        row.appendChild(createSquare(rows, sqrs));
+createGrid(n);
+
+function createGrid(n) {
+
+    for (rows = 1; rows <= n; rows++) {
+        // creating rows
+        var row = document.createElement("div");
+        row.setAttribute("id", "row-"+rows);
+        
+        row.style.width = ((n * 160) + (n * 10)) + "px"; // fixed box width
+        
+        for (sqrs = 1; sqrs <= n; sqrs++) {
+            row.appendChild(createSquare(rows, sqrs));
+        }
+        containerGrid.appendChild(row);
     }
-    containerGrid.appendChild(row);
+
 }
 
 
@@ -25,13 +31,15 @@ document.body.addEventListener('click', function(e) {
     
     var obj = e.srcElement;
     if (hasClass(obj, "marked-x")) {
-        //code
         obj.parentNode.setAttribute("class","square");
+        obj.parentNode.setAttribute("ondrop", "drop(event)");
+        obj.parentNode.setAttribute("ondragover", "allowDrop(event)");
         obj.parentNode.removeChild(obj);
-        obj.parentNode.setAttribute("ondrop","");
-        obj.parentNode.setAttribute("ondragover","");
+       
     } else {
         obj.className += " marked";
+        obj.setAttribute("ondrop","");
+        obj.setAttribute("ondragover","");
         markX(obj);
     }
     
@@ -55,6 +63,7 @@ function markX(objSqr) {
         if (objSqr.firstChild.getAttribute("class") == "marked-x") {
             objSqr.innerHTML = "";
             objSqr.className = "square";
+           
         }
             
     } else {
@@ -88,7 +97,7 @@ function swapPropertiesBetweenElements(fromElement, toElement) {
 
 
 function drag(ev) {
-    //console.log(ev.target.id);
+    console.log(ev.target.id);
     ev.dataTransfer.setData("text", ev.target.id);
     fromElement = ev.srcElement.parentElement;
 }
@@ -98,9 +107,11 @@ function allowDrop(ev) {
 }
 
 function drop(ev) {
+    
     var data = ev.dataTransfer.getData("text");
     ev.target.appendChild(document.getElementById(data));
     swapPropertiesBetweenElements(fromElement,ev.srcElement);
+    
 }
 
 /** Helper Functions **/
